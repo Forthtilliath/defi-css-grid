@@ -1,0 +1,9 @@
+{
+  "name": "css-grid",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "sass" : "sass --watch styles:styles"
+  }
+}

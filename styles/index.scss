@@ -1,0 +1,52 @@
+// :root {
+//     --js-nbCol: 5;
+//     --js-nbRow: 5;
+// }
+
+*,
+:before,
+:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #333;
+    overflow: hidden;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    button {
+        padding: 10px;
+        margin: 30px;
+    }
+
+    .container {
+        display: grid;
+        height: 500px;
+        width: 500px;
+        grid-template-columns: repeat(var(--js-nbCol), 1fr);
+        grid-template-rows: repeat(var(--js-nbRow), 1fr);
+        grid-column-gap: 2px;
+        grid-row-gap: 2px;
+        background-color: #333;
+    
+        .case {
+            background-color: #2de;
+            transition: all .3s ease-in-out;
+
+            &.active {
+                background-color: #d2e;
+                transition: all .3s ease-in-out;
+            }
+        }
+    }
+
+}
