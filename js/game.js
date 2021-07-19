@@ -1,3 +1,5 @@
+import {timeout} from './utils.js'
+
 class Game {
     constructor() {
         this.container = document.querySelector('.container');
@@ -8,7 +10,8 @@ class Game {
         this.createEvents();
         this.started = false;
 
-        this.activeDuration = 1500;
+        this.activeDuration = 1000;
+        this.intervalDuration = 300;
     }
 
     /**
@@ -67,12 +70,13 @@ class Game {
     /**
      * Démarre la partie
      */
-    startGame() {
+    async startGame() {
         this.started = true;
-        console.log('start game');
+        console.log('start game', 'tabCasesToFind', this.tabCasesToFind);
 
-        for (const caseToFind of this.tabCasesToFind) {
-            this.activeCase(caseToFind);
+        for (const i in this.tabCasesToFind) {
+            this.activeCase({ number: this.tabCasesToFind[i], i: +i + 1 });
+            await timeout(this.activeDuration + this.intervalDuration);
         }
 
         this.activeCase(this.addCaseToFind());
@@ -80,17 +84,25 @@ class Game {
     }
 
     addCaseToFind() {
-        let nb = Math.floor(Math.random() * this.nbCases);
-        this.tabCasesToFind.push(nb);
-        return nb;
+        let number = Math.floor(Math.random() * this.nbCases) + 1;
+        let i = this.tabCasesToFind.push(number);
+        return { number, i };
     }
 
-    activeCase(nb) {
-        document.querySelector(`.case:nth-child(${nb})`).classList.add('active');
+    activeCase({ number, i }) {
+        console.log('number', number, 'i', i, 'duration', this.activeDuration);
+        document.querySelector(`.case:nth-child(${number})`).classList.add('active');
         setTimeout(() => {
-            document.querySelector(`.case:nth-child(${nb})`).classList.remove('active');
-        }, this.activeDuration);
+            document.querySelector(`.case:nth-child(${number})`).classList.remove('active');
+            return;
+        }, this.activeDuration );
     }
+
+    /**
+     * 1 : setTimeout 1000
+     *      await 1300
+     * 2 : set
+     */
 }
 
 export default new Game();
