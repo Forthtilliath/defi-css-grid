@@ -41,8 +41,11 @@ button {
   background-color: #cccccc;
   transition: all 0.3s ease-in-out;
 }
+#root .container .case.odd {
+  background-color: #f9f9f9;
+}
 #root .container .case.active {
-  background-color: #dd22ee;
+  background-color: #395dff;
 }
 #root .container .case.clickable {
   cursor: pointer;

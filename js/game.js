@@ -65,7 +65,7 @@ class Game {
      */
     createGame() {
         for (let i = 0; i < this.nbCases; i++) {
-            this.container.appendChild(this.createCase());
+            this.container.appendChild(this.createCase(i%2 === 0));
         }
         this.cases = document.querySelectorAll('.case');
         this.createCaseEvents();
@@ -73,11 +73,13 @@ class Game {
 
     /**
      * Retourne une case
+     * @param {Boolean} odd Si true, une classe supplémentaire est ajoutée à la case
      * @returns {HTMLDivElement}
      */
-    createCase() {
+    createCase(odd) {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case');
+        if( odd ) uneCase.classList.add('odd');
         return uneCase;
     }
 
@@ -167,9 +169,10 @@ class Game {
     /**
      * Démarre une nouvelle partie
      */
-    startNewGame() {
+    async startNewGame() {
         this.gameOver.classList.add('hidden');
         this.getCase(this.errorCase).classList.remove('wrong');
+        await timeout(1000);
         this.startGame();
     }
 
@@ -192,7 +195,6 @@ class Game {
      */
     rectifySize() {
         let res = this.checkSize();
-        console.log('res', res);
         switch (res) {
             case -1:
                 this.size = this.defaultCases;

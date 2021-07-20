@@ -52,8 +52,12 @@ button {
             background-color: rgb(204, 204, 204);
             transition: all 0.3s ease-in-out;
 
+            &.odd {
+                background-color: rgb(249, 249, 249);;
+            }
+
             &.active {
-                background-color: rgb(221, 34, 238);
+                background-color: rgb(57, 93, 255);
             }
 
             &.clickable {
