@@ -21,6 +21,10 @@ class Game {
 
         this.activeDuration = 1000;
         this.intervalDuration = 300;
+        this.minCases = 2;
+        this.defaultCases = 5;
+        this.maxCases = 10;
+        this.size = this.defaultCases;
 
         this.container.innerHTML = '';
 
@@ -35,16 +39,16 @@ class Game {
         this.score = 0;
         this.tabCasesToFind = [];
         this.divCurrentScore.innerText = 0;
+        this.errorCase = -1;
     }
 
     /**
-     *
-     * @param {Number} size Nombre de cases par ligne et colonne
+     * Met à jour la grille en fonction de la taille
      */
-    setSize(size) {
-        this.nbCol = size;
-        this.nbRow = size;
-        this.nbCases = size * size;
+    setSize() {
+        this.nbCol = this.size;
+        this.nbRow = this.size;
+        this.nbCases = this.size * this.size;
         this.setGrid();
     }
 
@@ -85,6 +89,9 @@ class Game {
         this.btn_newStart.addEventListener('click', () => this.startNewGame());
     }
 
+    /**
+     * Supprime les events
+     */
     deleteEvents() {
         this.deleteCaseEvents();
     }
@@ -96,6 +103,9 @@ class Game {
         this.cases.forEach((uneCase) => uneCase.addEventListener('click', (e) => this.eventClickCase(e.target)));
     }
 
+    /**
+     * Supprime les events liés aux cases
+     */
     deleteCaseEvents() {
         this.cases.forEach((uneCase) => uneCase.removeEventListener('click', (e) => this.eventClickCase(e.target)));
     }
@@ -110,17 +120,16 @@ class Game {
             let caseClicked = [...this.cases].indexOf(uneCase);
             let isGood = this.isCaseClickedIsGood(caseClicked);
 
-            isGood
-                ? await this.showRightCase(caseClicked)
-                : await this.showWrongCase(caseClicked);
-            
             if (!isGood) {
+                await this.showWrongCase(caseClicked);
+                this.errorCase = caseClicked;
                 this.divFinalScore.innerText = this.score;
                 this.showGameOver();
                 return;
             }
 
             this.setScore();
+            await this.showRightCase(caseClicked);
 
             if (this.nbCasesClicked < this.tabCasesToFind.length - 1) {
                 this.nbCasesClicked++;
@@ -129,7 +138,6 @@ class Game {
                 this.launchTurn();
             }
         }
-        // this.setCasesClickable(true);
     }
 
     /**
@@ -144,17 +152,60 @@ class Game {
         this.launchTurn();
     }
 
+    /**
+     * Démarre une première partie
+     */
     startFirstGame() {
-        console.log('p',this.inputNbCases.value);
-        this.setSize(+this.inputNbCases.value);
+        this.rectifySize();
+        console.log(this.size);
+        this.setSize();
         this.createGame();
         this.firstGame.classList.add('hidden');
         this.startGame();
     }
 
+    /**
+     * Démarre une nouvelle partie
+     */
     startNewGame() {
         this.gameOver.classList.add('hidden');
+        this.getCase(this.errorCase).classList.remove('wrong');
         this.startGame();
+    }
+
+    /**
+     * Vérifie si la taille reçu est correct
+     * @returns {Number} Retourne -1 si le format est incorrect,
+     * -2 si la taille est trop petite, -3 si elle est trop grande,
+     * et un entier positif si la taille est correct
+     */
+    checkSize() {
+        let input = +this.inputNbCases.value;
+        if (isNaN(+this.inputNbCases.value.replace(/\s|\$/g, ''))) return -1;
+        if (input < this.minCases) return -2;
+        if (input > this.maxCases) return -3;
+        return input;
+    }
+
+    /**
+     * Corrige la taille si besoin
+     */
+    rectifySize() {
+        let res = this.checkSize();
+        console.log('res', res);
+        switch (res) {
+            case -1:
+                this.size = this.defaultCases;
+                break;
+            case -2:
+                this.size = this.minCases;
+                break;
+            case -3:
+                this.size = this.maxCases;
+                break;
+            default:
+                this.size = res;
+        }
     }
 
     /**
@@ -205,11 +256,19 @@ class Game {
         await this.showStateCase(number, 'active');
     }
 
+    /**
+     * Active une case en vert pour montrer au joueur a eu bon
+     * @param {Number} number Réprésente l'indice de la case
+     */
     async showRightCase(number) {
         this.soundRight.play();
         await this.showStateCase(number, 'right');
     }
 
+    /**
+     * Active une case en rouge pour montrer au joueur a eu faux
+     * @param {Number} number Réprésente l'indice de la case
+     */
     async showWrongCase(number) {
         this.soundWrong.play();
         await this.showStateCase(number, 'wrong');
@@ -221,13 +280,16 @@ class Game {
      * @param {String} state
      */
     async showStateCase(number, state) {
-        document.querySelector(`.case:nth-child(${number + 1})`).classList.add(state);
+        this.getCase(number).classList.add(state);
 
-        setTimeout(() => {
-            document.querySelector(`.case:nth-child(${number + 1})`).classList.remove(state);
-        }, this.activeDuration);
+        if (state !== 'wrong') {
+            let reduceDuration = state === 'active' ? 1 : 1.5;
+            setTimeout(() => {
+                this.getCase(number).classList.remove(state);
+            }, this.activeDuration / reduceDuration);
 
-        await timeout(this.activeDuration + this.intervalDuration);
+            await timeout(this.activeDuration / reduceDuration + this.intervalDuration);
+        }
     }
 
     /**
@@ -259,15 +321,30 @@ class Game {
         return caseRank === this.tabCasesToFind[this.nbCasesClicked];
     }
 
+    /**
+     * Affiche l'ecran de game over
+     */
     showGameOver() {
         this.deleteEvents();
-        
+
         this.gameOver.classList.remove('hidden');
     }
 
+    /**
+     * Modifie le score
+     */
     setScore() {
         this.score += 1;
         this.divCurrentScore.innerText = this.score;
+    }
+
+    /**
+     * Retourne une case
+     * @param {HTMLDivElement} nb
+     * @returns
+     */
+    getCase(nb) {
+        return document.querySelector(`.case:nth-child(${nb + 1})`);
     }
 }
 

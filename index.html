@@ -9,7 +9,8 @@
     </head>
     <body>
         <div id="root">
-            <div class="score">Score actuel : <span id="currentScore">0</span></div>
+            <h1>Teste ta mémoire</h1>
+            <h2 class="score">Score actuel : <span id="currentScore">0</span></h2>
 
             <div class="container"></div>
         </div>
@@ -27,11 +28,17 @@
             <div class="container">
                 <div class="content">
                     <h3>Configurez la difficulté</h3>
-                    <input type="number" value="5" id="nbCases" />
+                    <label for="nbCases">Combien de cases souhaitez-vous ?</label>
+                    <div>
+                        <span class="nbCases-decrement">–</span>
+                        <input type="text" value="5" id="nbCases" min="2" step="1" max="10" />
+                        <span class="nbCases-increment">+</span>
+                    </div>
                     <button id="btn_firstStart">Démarrer une partie</button>
                 </div>
             </div>
         </div>
-        <script src="./js/index.js" type="module"></script>
+        <script src="./js/input.js" type="module"></script>
+        <script src="./js/game.js" type="module"></script>
     </body>
 </html>
