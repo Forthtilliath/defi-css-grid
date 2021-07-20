@@ -6,7 +6,7 @@ class Game {
         this.btn_start = document.querySelector('#btn_start');
         this.btn_nextStep = document.querySelector('#btn_nextStep');
 
-        this.setSize(5);
+        this.setSize(2);
         this.createEvents();
         this.started = false;
         this.playerTurn = false;
@@ -85,8 +85,8 @@ class Game {
     eventClickCase(uneCase) {
         if (this.playerTurn) {
             let caseClicked = [...this.cases].indexOf(uneCase);
-            this.isCaseClickedIsGood(caseClicked,)
-            this.nbCasesClicked;
+            this.isCaseClickedIsGood(caseClicked) ? this.showRightCase(caseClicked) : this.showWrongCase(caseClicked);
+            // this.nbCasesClicked++;
         }
     }
 
@@ -105,7 +105,7 @@ class Game {
      * Lance un tour de jeu qui comprend le fait de montrer les cases à trouver et la sélection du joueur
      */
     async launchTurn() {
-        await this.showCaseToFind();
+        await this.showCasesToFind();
         this.selectionPlayer();
 
         // Tour suivant
@@ -116,7 +116,7 @@ class Game {
     /**
      * Affiche les cases à trouver
      */
-    async showCaseToFind() {
+    async showCasesToFind() {
         this.playerTurn = false;
         this.setCasesClickable(false);
         this.btn_start.disabled = true;
@@ -137,20 +137,38 @@ class Game {
      * @returns {Number}
      */
     addCaseToFind() {
-        let number = Math.floor(Math.random() * this.nbCases) + 1;
+        let number = Math.floor(Math.random() * this.nbCases);
         this.tabCasesToFind.push(number);
+        console.log('tabCasesToFind', this.tabCasesToFind);
         return number;
     }
 
     /**
      * Active une case en lui ajoutant la classe active temporairement
-     * @param {Number} number Réprésente l'indice de la case (commence à 1)
+     * @param {Number} number Réprésente l'indice de la case
      */
     async activeCase(number) {
-        document.querySelector(`.case:nth-child(${number})`).classList.add('active');
+        await this.showStateCase(number, 'active');
+    }
+
+    async showRightCase(number) {
+        await this.showStateCase(number, 'right');
+    }
+
+    async showWrongCase(number) {
+        await this.showStateCase(number, 'wrong');
+    }
+
+    /**
+     * Met en surbrillance une classe temporairement
+     * @param {Number} number Réprésente l'indice de la case
+     * @param {String} state
+     */
+    async showStateCase(number, state) {
+        document.querySelector(`.case:nth-child(${number + 1})`).classList.add(state);
 
         setTimeout(() => {
-            document.querySelector(`.case:nth-child(${number})`).classList.remove('active');
+            document.querySelector(`.case:nth-child(${number + 1})`).classList.remove(state);
         }, this.activeDuration);
 
         await timeout(this.activeDuration + this.intervalDuration);
@@ -179,11 +197,9 @@ class Game {
     /**
      *
      * @param {Number} caseRank Rang de la case sur la laquelle le joueur a cliqué
-     * @param {Number} caseClickedRank Rang de la case parmis celle que le joueur a cliqué
      * @returns {boolean}
      */
     isCaseClickedIsGood(caseRank) {
-        console.log(caseRank, this.tabCasesToFind[this.nbCasesClicked]);
         return caseRank === this.tabCasesToFind[this.nbCasesClicked];
     }
 }

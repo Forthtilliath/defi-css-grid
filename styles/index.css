@@ -38,10 +38,15 @@ body {
 }
 #root .container .case.active {
   background-color: #d2e;
-  transition: all 0.3s ease-in-out;
 }
 #root .container .case.clickable {
   cursor: pointer;
+}
+#root .container .case.right {
+  background-color: #13ff75;
+}
+#root .container .case.wrong {
+  background-color: #ff5252;
 }
 
 /*# sourceMappingURL=index.css.map */

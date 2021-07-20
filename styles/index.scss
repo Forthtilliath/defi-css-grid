@@ -44,11 +44,18 @@ body {
 
             &.active {
                 background-color: #d2e;
-                transition: all .3s ease-in-out;
             }
 
             &.clickable {
                 cursor: pointer;
+            }
+
+            &.right {
+                background-color: rgb(19, 255, 117);
+            }
+
+            &.wrong {
+                background-color: rgb(255, 82, 82);
             }
         }
     }
