@@ -72,16 +72,20 @@ class Game {
      */
     async startGame() {
         this.started = true;
+
         console.log('start game', 'tabCasesToFind', this.tabCasesToFind);
+
+        this.btn_start.disabled = true;
 
         // Affiche toutes les cases précédentes
         for (const i in this.tabCasesToFind) {
-            this.activeCase(this.tabCasesToFind[i]);
-            await timeout(this.activeDuration + this.intervalDuration);
+            await this.activeCase(this.tabCasesToFind[i]);
         }
 
         // Affiche la nouvelle case
-        this.activeCase(this.addCaseToFind());
+        await this.activeCase(this.addCaseToFind());
+
+        this.btn_start.disabled = false;
 
         this.step++;
     }
@@ -97,16 +101,17 @@ class Game {
     }
 
     /**
-     *
+     * Active une case en lui ajoutant la classe active temporairement
      * @param {Number} number Réprésente l'indice de la case (commence à 1)
      */
-    activeCase(number) {
-        console.log('number', number, 'duration', this.activeDuration);
-
+    async activeCase(number) {
         document.querySelector(`.case:nth-child(${number})`).classList.add('active');
+        
         setTimeout(() => {
             document.querySelector(`.case:nth-child(${number})`).classList.remove('active');
         }, this.activeDuration);
+
+        await timeout(this.activeDuration + this.intervalDuration);
     }
 }
 
