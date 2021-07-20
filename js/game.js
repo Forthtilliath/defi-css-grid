@@ -4,6 +4,7 @@ class Game {
     constructor() {
         this.container = document.querySelector('.container');
         this.btn_start = document.querySelector('#btn_start');
+        this.btn_nextStep = document.querySelector('#btn_nextStep');
 
         this.setSize(5);
         this.createEvents();
@@ -11,9 +12,6 @@ class Game {
 
         this.activeDuration = 1000;
         this.intervalDuration = 300;
-
-        // TODO Supprimer plus tard, seulement là pour les tests
-        this.init();
     }
 
     /**
@@ -32,13 +30,13 @@ class Game {
         this.nbCol = size;
         this.nbRow = size;
         this.nbCases = size * size;
-        this.#setGrid();
+        this.setGrid();
     }
 
     /**
      * Met à jour le grid en fonction du nombre de lignes et colonnes souhaitées
      */
-    #setGrid() {
+    setGrid() {
         document.documentElement.style.setProperty('--js-nbCol', this.nbCol);
         document.documentElement.style.setProperty('--js-nbRow', this.nbRow);
     }
@@ -50,6 +48,7 @@ class Game {
         for (let i = 0; i < this.nbCases; i++) {
             this.container.appendChild(this.createCase());
         }
+        this.cases = document.querySelectorAll('.case');
     }
 
     /**
@@ -67,6 +66,7 @@ class Game {
      */
     createEvents() {
         this.btn_start.addEventListener('click', () => this.startGame());
+        this.btn_nextStep.addEventListener('click', () => this.launchTurn());
     }
 
     /**
@@ -75,7 +75,7 @@ class Game {
     startGame() {
         this.started = true;
 
-        // this.init();
+        this.init();
 
         this.launchTurn();
     }
@@ -133,9 +133,7 @@ class Game {
         await timeout(this.activeDuration + this.intervalDuration);
     }
 
-    selectionPlayer() {
-
-    }
+    selectionPlayer() {}
 }
 
 export default new Game();
