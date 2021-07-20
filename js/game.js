@@ -9,6 +9,8 @@ class Game {
         this.firstGame = document.querySelector('#beforeGame');
         this.inputNbCases = document.querySelector('#nbCases');
         this.gameOver = document.querySelector('#gameOver');
+        this.divCurrentScore = document.querySelector('#currentScore');
+        this.divFinalScore = document.querySelector('#finalScore');
 
         this.soundActive = new Audio('../sounds/active.mp3');
         this.soundRight = new Audio('../sounds/right.mp3');
@@ -30,7 +32,9 @@ class Game {
      */
     init() {
         this.step = 0;
+        this.score = 0;
         this.tabCasesToFind = [];
+        this.divCurrentScore.innerText = 0;
     }
 
     /**
@@ -111,9 +115,12 @@ class Game {
                 : await this.showWrongCase(caseClicked);
             
             if (!isGood) {
+                this.divFinalScore.innerText = this.score;
                 this.showGameOver();
                 return;
             }
+
+            this.setScore();
 
             if (this.nbCasesClicked < this.tabCasesToFind.length - 1) {
                 this.nbCasesClicked++;
@@ -256,6 +263,11 @@ class Game {
         this.deleteEvents();
         
         this.gameOver.classList.remove('hidden');
+    }
+
+    setScore() {
+        this.score += 1;
+        this.divCurrentScore.innerText = this.score;
     }
 }
 
