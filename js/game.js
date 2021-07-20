@@ -6,10 +6,14 @@ class Game {
         this.btn_start = document.querySelector('#btn_start');
         this.btn_nextStep = document.querySelector('#btn_nextStep');
 
+        this.soundActive = new Audio('../sounds/active.mp3');
+        this.soundRight = new Audio('../sounds/right.mp3');
+        this.soundWrong = new Audio('../sounds/wrong.mp3');
+
         this.setSize(2);
         this.createEvents();
         this.started = false;
-        this.playerTurn = false;
+        this.playerCanClick = false;
 
         this.activeDuration = 1000;
         this.intervalDuration = 300;
@@ -70,11 +74,9 @@ class Game {
      */
     createEvents() {
         this.btn_start.addEventListener('click', () => this.startGame());
-        this.btn_nextStep.addEventListener('click', () => this.launchTurn());
     }
 
     deleteEvents() {
-        this.btn_nextStep.removeEventListener('click', () => this.launchTurn());
         this.deleteCaseEvents();
     }
 
@@ -94,8 +96,8 @@ class Game {
      * @param {HTMLDivElement} uneCase
      */
     async eventClickCase(uneCase) {
-        this.setCasesClickable(false);
-        if (this.playerTurn) {
+        if (this.playerCanClick) {
+            this.setCasesClickable(false);
             let caseClicked = [...this.cases].indexOf(uneCase);
             let isGood = this.isCaseClickedIsGood(caseClicked);
 
@@ -109,8 +111,8 @@ class Game {
             }
 
             if (this.nbCasesClicked < this.tabCasesToFind.length - 1) {
-                // console.log(object);
                 this.nbCasesClicked++;
+                this.setCasesClickable(true);
             } else {
                 this.launchTurn();
             }
@@ -145,9 +147,7 @@ class Game {
      * Affiche les cases à trouver
      */
     async showCasesToFind() {
-        this.playerTurn = false;
         this.setCasesClickable(false);
-        this.btn_start.disabled = true;
 
         // Affiche toutes les cases précédentes
         for (const i in this.tabCasesToFind) {
@@ -156,8 +156,6 @@ class Game {
 
         // Affiche la nouvelle case
         await this.activeCase(this.addCaseToFind());
-
-        this.btn_start.disabled = false;
     }
 
     /**
@@ -167,7 +165,6 @@ class Game {
     addCaseToFind() {
         let number = Math.floor(Math.random() * this.nbCases);
         this.tabCasesToFind.push(number);
-        console.log('tabCasesToFind', this.tabCasesToFind);
         return number;
     }
 
@@ -176,14 +173,17 @@ class Game {
      * @param {Number} number Réprésente l'indice de la case
      */
     async activeCase(number) {
+        this.soundActive.play();
         await this.showStateCase(number, 'active');
     }
 
     async showRightCase(number) {
+        this.soundRight.play();
         await this.showStateCase(number, 'right');
     }
 
     async showWrongCase(number) {
+        this.soundWrong.play();
         await this.showStateCase(number, 'wrong');
     }
 
@@ -206,8 +206,7 @@ class Game {
      * Tour du joueur
      */
     selectionPlayer() {
-        this.setCasesClickable();
-        this.playerTurn = true;
+        this.setCasesClickable(true);
         this.nbCasesClicked = 0;
     }
 
@@ -216,6 +215,7 @@ class Game {
      * @param {boolean} clickable
      */
     setCasesClickable(clickable = true) {
+        this.playerCanClick = clickable;
         this.cases.forEach((uneCase) => {
             uneCase.classList.remove('clickable');
             if (clickable) uneCase.classList.add('clickable');
