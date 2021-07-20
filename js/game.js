@@ -6,12 +6,14 @@ class Game {
         this.btn_start = document.querySelector('#btn_start');
 
         this.setSize(5);
-        this.init();
         this.createEvents();
         this.started = false;
 
         this.activeDuration = 1000;
         this.intervalDuration = 300;
+
+        // TODO Supprimer plus tard, seulement là pour les tests
+        this.init();
     }
 
     /**
@@ -30,13 +32,13 @@ class Game {
         this.nbCol = size;
         this.nbRow = size;
         this.nbCases = size * size;
-        this.setGrid();
+        this.#setGrid();
     }
 
     /**
      * Met à jour le grid en fonction du nombre de lignes et colonnes souhaitées
      */
-    setGrid() {
+    #setGrid() {
         document.documentElement.style.setProperty('--js-nbCol', this.nbCol);
         document.documentElement.style.setProperty('--js-nbRow', this.nbRow);
     }
@@ -70,11 +72,30 @@ class Game {
     /**
      * Démarre la partie
      */
-    async startGame() {
+    startGame() {
         this.started = true;
 
-        console.log('start game', 'tabCasesToFind', this.tabCasesToFind);
+        // this.init();
 
+        this.launchTurn();
+    }
+
+    /**
+     * Lance un tour de jeu qui comprend le fait de montrer les cases à trouver et la sélection du joueur
+     */
+    launchTurn() {
+        this.showCaseToFind();
+        this.selectionPlayer();
+
+        // Tour suivant
+        this.step++;
+        // this.launchTurn();
+    }
+
+    /**
+     * Affiche les cases à trouver
+     */
+    async showCaseToFind() {
         this.btn_start.disabled = true;
 
         // Affiche toutes les cases précédentes
@@ -86,8 +107,6 @@ class Game {
         await this.activeCase(this.addCaseToFind());
 
         this.btn_start.disabled = false;
-
-        this.step++;
     }
 
     /**
@@ -106,12 +125,16 @@ class Game {
      */
     async activeCase(number) {
         document.querySelector(`.case:nth-child(${number})`).classList.add('active');
-        
+
         setTimeout(() => {
             document.querySelector(`.case:nth-child(${number})`).classList.remove('active');
         }, this.activeDuration);
 
         await timeout(this.activeDuration + this.intervalDuration);
+    }
+
+    selectionPlayer() {
+
     }
 }
 
