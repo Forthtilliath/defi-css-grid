@@ -69,13 +69,13 @@ body {
   align-items: center;
   width: 50%;
   height: 50%;
-  border-radius: 10%;
+  border-radius: 20px;
   padding: 10%;
   background-color: #ccc;
 }
 #gameOver .container .content {
   text-align: center;
-  font-size: 5em;
+  font-size: 2em;
 }
 
 /*# sourceMappingURL=index.css.map */
