@@ -5,14 +5,18 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Defi Grid - Forth</title>
-        <link rel="stylesheet" href="./styles/index.css">
+        <link rel="stylesheet" href="./styles/index.css" />
     </head>
     <body>
         <div id="root">
             <button id="btn_start">Démarrer la partie</button>
             <button id="btn_nextStep">Etape suivante</button>
-            
+
+            <div class="container"></div>
+        </div>
+        <div id="gameOver" class="hidden">
             <div class="container">
+                <div class="content">Vous avez perdu</div>
             </div>
         </div>
         <script src="./js/index.js" type="module"></script>

@@ -13,6 +13,8 @@ class Game {
 
         this.activeDuration = 1000;
         this.intervalDuration = 300;
+
+        this.container.innerHTML = '';
     }
 
     /**
@@ -71,6 +73,11 @@ class Game {
         this.btn_nextStep.addEventListener('click', () => this.launchTurn());
     }
 
+    deleteEvents() {
+        this.btn_nextStep.removeEventListener('click', () => this.launchTurn());
+        this.deleteCaseEvents();
+    }
+
     /**
      * Génère les events liés aux cases (ne peut etre fait qu'une fois les cases générées)
      */
@@ -78,16 +85,37 @@ class Game {
         this.cases.forEach((uneCase) => uneCase.addEventListener('click', (e) => this.eventClickCase(e.target)));
     }
 
+    deleteCaseEvents() {
+        this.cases.forEach((uneCase) => uneCase.removeEventListener('click', (e) => this.eventClickCase(e.target)));
+    }
+
     /**
      * Actions effectuées lors d'une clic sur une case
      * @param {HTMLDivElement} uneCase
      */
-    eventClickCase(uneCase) {
+    async eventClickCase(uneCase) {
+        this.setCasesClickable(false);
         if (this.playerTurn) {
             let caseClicked = [...this.cases].indexOf(uneCase);
-            this.isCaseClickedIsGood(caseClicked) ? this.showRightCase(caseClicked) : this.showWrongCase(caseClicked);
-            // this.nbCasesClicked++;
+            let isGood = this.isCaseClickedIsGood(caseClicked);
+
+            isGood
+                ? await this.showRightCase(caseClicked)
+                : await this.showWrongCase(caseClicked);
+            
+            if (!isGood) {
+                this.gameOver();
+                return;
+            }
+
+            if (this.nbCasesClicked < this.tabCasesToFind.length - 1) {
+                // console.log(object);
+                this.nbCasesClicked++;
+            } else {
+                this.launchTurn();
+            }
         }
+        // this.setCasesClickable(true);
     }
 
     /**
@@ -201,6 +229,12 @@ class Game {
      */
     isCaseClickedIsGood(caseRank) {
         return caseRank === this.tabCasesToFind[this.nbCasesClicked];
+    }
+
+    gameOver() {
+        this.deleteEvents();
+        
+        document.querySelector('#gameOver').classList.remove('hidden');
     }
 }
 

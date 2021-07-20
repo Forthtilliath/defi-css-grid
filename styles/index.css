@@ -13,9 +13,9 @@ body {
 
 #root {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100vh;
 }
 #root button {
@@ -30,14 +30,14 @@ body {
   grid-template-rows: repeat(var(--js-nbRow), 1fr);
   grid-column-gap: 2px;
   grid-row-gap: 2px;
-  background-color: #333;
+  background-color: #333333;
 }
 #root .container .case {
-  background-color: #2de;
+  background-color: #20ddee;
   transition: all 0.3s ease-in-out;
 }
 #root .container .case.active {
-  background-color: #d2e;
+  background-color: #dd22ee;
 }
 #root .container .case.clickable {
   cursor: pointer;
@@ -47,6 +47,35 @@ body {
 }
 #root .container .case.wrong {
   background-color: #ff5252;
+}
+
+#gameOver {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(51, 51, 51, 0.6);
+}
+#gameOver.hidden {
+  display: none;
+}
+#gameOver .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50%;
+  border-radius: 10%;
+  padding: 10%;
+  background-color: #ccc;
+}
+#gameOver .container .content {
+  text-align: center;
+  font-size: 5em;
 }
 
 /*# sourceMappingURL=index.css.map */

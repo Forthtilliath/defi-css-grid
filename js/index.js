@@ -10,4 +10,5 @@ Game.createGame();
  *  b. Incrémenter le nombre de click
  *  c. Si limite atteinte, go nextTurn
  *  
+ * 3. Gestion du score
  */
