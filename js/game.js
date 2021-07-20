@@ -10,7 +10,7 @@ class Game {
         this.soundRight = new Audio('../sounds/right.mp3');
         this.soundWrong = new Audio('../sounds/wrong.mp3');
 
-        this.setSize(2);
+        this.setSize(10);
         this.createEvents();
         this.started = false;
         this.playerCanClick = false;
