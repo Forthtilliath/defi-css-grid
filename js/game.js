@@ -1,4 +1,4 @@
-import {timeout} from './utils.js'
+import { timeout } from './utils.js';
 
 class Game {
     constructor() {
@@ -74,35 +74,40 @@ class Game {
         this.started = true;
         console.log('start game', 'tabCasesToFind', this.tabCasesToFind);
 
+        // Affiche toutes les cases précédentes
         for (const i in this.tabCasesToFind) {
-            this.activeCase({ number: this.tabCasesToFind[i], i: +i + 1 });
+            this.activeCase(this.tabCasesToFind[i]);
             await timeout(this.activeDuration + this.intervalDuration);
         }
 
+        // Affiche la nouvelle case
         this.activeCase(this.addCaseToFind());
+
         this.step++;
     }
 
+    /**
+     * Ajoute une case à trouver
+     * @returns {Number}
+     */
     addCaseToFind() {
         let number = Math.floor(Math.random() * this.nbCases) + 1;
-        let i = this.tabCasesToFind.push(number);
-        return { number, i };
-    }
-
-    activeCase({ number, i }) {
-        console.log('number', number, 'i', i, 'duration', this.activeDuration);
-        document.querySelector(`.case:nth-child(${number})`).classList.add('active');
-        setTimeout(() => {
-            document.querySelector(`.case:nth-child(${number})`).classList.remove('active');
-            return;
-        }, this.activeDuration );
+        this.tabCasesToFind.push(number);
+        return number;
     }
 
     /**
-     * 1 : setTimeout 1000
-     *      await 1300
-     * 2 : set
+     *
+     * @param {Number} number Réprésente l'indice de la case (commence à 1)
      */
+    activeCase(number) {
+        console.log('number', number, 'duration', this.activeDuration);
+
+        document.querySelector(`.case:nth-child(${number})`).classList.add('active');
+        setTimeout(() => {
+            document.querySelector(`.case:nth-child(${number})`).classList.remove('active');
+        }, this.activeDuration);
+    }
 }
 
 export default new Game();
