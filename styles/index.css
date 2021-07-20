@@ -40,5 +40,8 @@ body {
   background-color: #d2e;
   transition: all 0.3s ease-in-out;
 }
+#root .container .case.clickable {
+  cursor: pointer;
+}
 
 /*# sourceMappingURL=index.css.map */

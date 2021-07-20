@@ -46,6 +46,10 @@ body {
                 background-color: #d2e;
                 transition: all .3s ease-in-out;
             }
+
+            &.clickable {
+                cursor: pointer;
+            }
         }
     }
 

@@ -9,6 +9,7 @@ class Game {
         this.setSize(5);
         this.createEvents();
         this.started = false;
+        this.playerTurn = false;
 
         this.activeDuration = 1000;
         this.intervalDuration = 300;
@@ -49,6 +50,7 @@ class Game {
             this.container.appendChild(this.createCase());
         }
         this.cases = document.querySelectorAll('.case');
+        this.createCaseEvents();
     }
 
     /**
@@ -70,6 +72,22 @@ class Game {
     }
 
     /**
+     * Génère les events liés aux cases (ne peut etre fait qu'une fois les cases générées)
+     */
+    createCaseEvents() {
+        this.cases.forEach((uneCase) => uneCase.addEventListener('click', (e) => this.eventClickCase(e.target)));
+    }
+
+    /**
+     * Actions effectuées lors d'une clic sur une case
+     * @param {HTMLDivElement} uneCase 
+     */
+    eventClickCase(uneCase) {
+        if (this.playerTurn) {
+        }
+    }
+
+    /**
      * Démarre la partie
      */
     startGame() {
@@ -83,8 +101,8 @@ class Game {
     /**
      * Lance un tour de jeu qui comprend le fait de montrer les cases à trouver et la sélection du joueur
      */
-    launchTurn() {
-        this.showCaseToFind();
+    async launchTurn() {
+        await this.showCaseToFind();
         this.selectionPlayer();
 
         // Tour suivant
@@ -96,6 +114,8 @@ class Game {
      * Affiche les cases à trouver
      */
     async showCaseToFind() {
+        this.playerTurn = false;
+        this.setCasesClickable(false);
         this.btn_start.disabled = true;
 
         // Affiche toutes les cases précédentes
@@ -133,7 +153,17 @@ class Game {
         await timeout(this.activeDuration + this.intervalDuration);
     }
 
-    selectionPlayer() {}
+    selectionPlayer() {
+        this.playerTurn = true;
+        this.setCasesClickable();
+    }
+
+    setCasesClickable(clickable = true) {
+        this.cases.forEach((uneCase) => {
+            uneCase.classList.remove('clickable');
+            if (clickable) uneCase.classList.add('clickable');
+        });
+    }
 }
 
 export default new Game();
