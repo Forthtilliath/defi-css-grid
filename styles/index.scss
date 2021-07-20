@@ -41,11 +41,11 @@ button {
         grid-column-gap: 2px;
         grid-row-gap: 2px;
         background-color: rgb(51, 51, 51);
-    
+
         .case {
             border-radius: 5px;
             background-color: rgb(204, 204, 204);
-            transition: all .3s ease-in-out;
+            transition: all 0.3s ease-in-out;
 
             &.active {
                 background-color: rgb(221, 34, 238);
@@ -64,10 +64,10 @@ button {
             }
         }
     }
-
 }
 
-#gameOver, #beforeGame {
+#gameOver,
+#beforeGame {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -91,15 +91,16 @@ button {
         border: 5px solid #ccc;
 
         .content {
-            @include divCenter();
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             flex-direction: column;
-            // text-align: center;
             font-size: 2em;
+            height: 80%;
 
             .image {
                 margin-top: 2rem;
             }
         }
     }
-
 }

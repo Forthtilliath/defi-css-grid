@@ -154,12 +154,14 @@ class Game {
      * Lance un tour de jeu qui comprend le fait de montrer les cases à trouver et la sélection du joueur
      */
     async launchTurn() {
+        // On montre les cases à cliquer
         await this.showCasesToFind();
+
+        // Le joueur tente de cliquer sur les memes cases
         this.selectionPlayer();
 
-        // Tour suivant
+        // On passe au tour suivant
         this.step++;
-        // this.launchTurn();
     }
 
     /**
@@ -222,7 +224,7 @@ class Game {
     }
 
     /**
-     * Tour du joueur
+     * Tour du joueur, on rend donc les cases clickable
      */
     selectionPlayer() {
         this.setCasesClickable(true);

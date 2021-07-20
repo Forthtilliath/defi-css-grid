@@ -51,7 +51,8 @@ button {
   background-color: #ff5252;
 }
 
-#gameOver, #beforeGame {
+#gameOver,
+#beforeGame {
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -62,10 +63,12 @@ button {
   align-items: center;
   background-color: rgba(51, 51, 51, 0.6);
 }
-#gameOver.hidden, #beforeGame.hidden {
+#gameOver.hidden,
+#beforeGame.hidden {
   display: none;
 }
-#gameOver .container, #beforeGame .container {
+#gameOver .container,
+#beforeGame .container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,14 +80,17 @@ button {
   color: #ccc;
   border: 5px solid #ccc;
 }
-#gameOver .container .content, #beforeGame .container .content {
+#gameOver .container .content,
+#beforeGame .container .content {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-direction: column;
   font-size: 2em;
+  height: 80%;
 }
-#gameOver .container .content .image, #beforeGame .container .content .image {
+#gameOver .container .content .image,
+#beforeGame .container .content .image {
   margin-top: 2rem;
 }
 
