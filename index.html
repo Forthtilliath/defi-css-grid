@@ -9,15 +9,30 @@
     </head>
     <body>
         <div id="root">
-            <button id="btn_start">Démarrer la partie</button>
+            
+
+            <div class="score">Score actuel : <span id="currentScore">0</span></div>
 
             <div class="container"></div>
         </div>
-        <div id="gameOver" class="hidden">
+        <div id="gameOver" class="">
+            <!-- <div id="gameOver" class="hidden"> -->
             <div class="container">
                 <div class="content">
-                    <div>Vous avez perdu !</div>
-                    <div>Votre score est de : <span id="score">0</span></div>
+                    <h3>Vous avez perdu !</h3>
+                    <div>Votre score est de : <span id="finalScore">0</span></div>
+                    <img src="./triste2.png" class="image" alt="sad" width="30%" />
+                    <button id="btn_newstart">Démarrer une nouvelle partie</button>
+                </div>
+            </div>
+        </div>
+        <div id="beforeGame" class="hidden">
+            <div class="container">
+                <div class="content">
+                    <h3>Configurez la difficulté</h3>
+                    <div>
+                        <button id="btn_start">Démarrer une partie</button>
+                    </div>
                 </div>
             </div>
         </div>

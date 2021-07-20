@@ -4,7 +4,9 @@ class Game {
     constructor() {
         this.container = document.querySelector('.container');
         this.btn_start = document.querySelector('#btn_start');
+        this.btn_newstart = document.querySelector('#btn_newstart');
         this.btn_nextStep = document.querySelector('#btn_nextStep');
+        this.gameOver = document.querySelector('#gameOver');
 
         this.soundActive = new Audio('../sounds/active.mp3');
         this.soundRight = new Audio('../sounds/right.mp3');
@@ -74,6 +76,7 @@ class Game {
      */
     createEvents() {
         this.btn_start.addEventListener('click', () => this.startGame());
+        this.btn_newstart.addEventListener('click', () => this.startNewGame());
     }
 
     deleteEvents() {
@@ -106,7 +109,7 @@ class Game {
                 : await this.showWrongCase(caseClicked);
             
             if (!isGood) {
-                this.gameOver();
+                this.showGameOver();
                 return;
             }
 
@@ -129,6 +132,11 @@ class Game {
         this.init();
 
         this.launchTurn();
+    }
+
+    startNewGame() {
+        this.gameOver.classList.add('hidden');
+        this.startGame();
     }
 
     /**
@@ -231,10 +239,10 @@ class Game {
         return caseRank === this.tabCasesToFind[this.nbCasesClicked];
     }
 
-    gameOver() {
+    showGameOver() {
         this.deleteEvents();
         
-        document.querySelector('#gameOver').classList.remove('hidden');
+        this.gameOver.classList.remove('hidden');
     }
 }
 

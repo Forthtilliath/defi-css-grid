@@ -22,15 +22,15 @@ body {
     overflow: hidden;
 }
 
+button {
+    padding: 10px;
+    margin: 30px;
+}
+
 #root {
     @include divCenter();
     flex-direction: column;
     height: 100vh;
-
-    button {
-        padding: 10px;
-        margin: 30px;
-    }
 
     .container {
         display: grid;
@@ -43,7 +43,8 @@ body {
         background-color: rgb(51, 51, 51);
     
         .case {
-            background-color: rgb(32, 221, 238);
+            border-radius: 5px;
+            background-color: rgb(204, 204, 204);
             transition: all .3s ease-in-out;
 
             &.active {
@@ -66,7 +67,7 @@ body {
 
 }
 
-#gameOver {
+#gameOver, #beforeGame {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -84,12 +85,20 @@ body {
         width: 50%;
         height: 50%;
         border-radius: 20px;
-        padding: 10%;
-        background-color: #ccc;
+        padding: 3%;
+        background-color: rgb(68, 68, 68);
+        color: #ccc;
+        border: 5px solid #ccc;
 
         .content {
-            text-align: center;
+            @include divCenter();
+            flex-direction: column;
+            // text-align: center;
             font-size: 2em;
+
+            .image {
+                margin-top: 2rem;
+            }
         }
     }
 
