@@ -80,10 +80,13 @@ class Game {
 
     /**
      * Actions effectuées lors d'une clic sur une case
-     * @param {HTMLDivElement} uneCase 
+     * @param {HTMLDivElement} uneCase
      */
     eventClickCase(uneCase) {
         if (this.playerTurn) {
+            let caseClicked = [...this.cases].indexOf(uneCase);
+            this.isCaseClickedIsGood(caseClicked,)
+            this.nbCasesClicked;
         }
     }
 
@@ -153,16 +156,35 @@ class Game {
         await timeout(this.activeDuration + this.intervalDuration);
     }
 
+    /**
+     * Tour du joueur
+     */
     selectionPlayer() {
-        this.playerTurn = true;
         this.setCasesClickable();
+        this.playerTurn = true;
+        this.nbCasesClicked = 0;
     }
 
+    /**
+     * Modifie l'état des cases : clickage ou pas
+     * @param {boolean} clickable
+     */
     setCasesClickable(clickable = true) {
         this.cases.forEach((uneCase) => {
             uneCase.classList.remove('clickable');
             if (clickable) uneCase.classList.add('clickable');
         });
+    }
+
+    /**
+     *
+     * @param {Number} caseRank Rang de la case sur la laquelle le joueur a cliqué
+     * @param {Number} caseClickedRank Rang de la case parmis celle que le joueur a cliqué
+     * @returns {boolean}
+     */
+    isCaseClickedIsGood(caseRank) {
+        console.log(caseRank, this.tabCasesToFind[this.nbCasesClicked]);
+        return caseRank === this.tabCasesToFind[this.nbCasesClicked];
     }
 }
 
