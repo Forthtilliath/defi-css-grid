@@ -1,6 +1,6 @@
 import Game from "./game.js";
 
-Game.createGame();
+// Game.createGame();
 
 /**
  * TODO List

@@ -3,17 +3,17 @@ import { timeout } from './utils.js';
 class Game {
     constructor() {
         this.container = document.querySelector('.container');
-        this.btn_start = document.querySelector('#btn_start');
-        this.btn_newstart = document.querySelector('#btn_newstart');
+        this.btn_firstStart = document.querySelector('#btn_firstStart');
+        this.btn_newStart = document.querySelector('#btn_newStart');
         this.btn_nextStep = document.querySelector('#btn_nextStep');
+        this.firstGame = document.querySelector('#beforeGame');
+        this.inputNbCases = document.querySelector('#nbCases');
         this.gameOver = document.querySelector('#gameOver');
 
         this.soundActive = new Audio('../sounds/active.mp3');
         this.soundRight = new Audio('../sounds/right.mp3');
         this.soundWrong = new Audio('../sounds/wrong.mp3');
 
-        this.setSize(10);
-        this.createEvents();
         this.started = false;
         this.playerCanClick = false;
 
@@ -21,6 +21,8 @@ class Game {
         this.intervalDuration = 300;
 
         this.container.innerHTML = '';
+
+        this.createEvents();
     }
 
     /**
@@ -75,8 +77,8 @@ class Game {
      * Génère l'ensemble des évents liés au jeu
      */
     createEvents() {
-        this.btn_start.addEventListener('click', () => this.startGame());
-        this.btn_newstart.addEventListener('click', () => this.startNewGame());
+        this.btn_firstStart.addEventListener('click', () => this.startFirstGame());
+        this.btn_newStart.addEventListener('click', () => this.startNewGame());
     }
 
     deleteEvents() {
@@ -126,12 +128,21 @@ class Game {
     /**
      * Démarre la partie
      */
-    startGame() {
+    async startGame() {
+        await timeout(1000);
         this.started = true;
 
         this.init();
 
         this.launchTurn();
+    }
+
+    startFirstGame() {
+        console.log('p',this.inputNbCases.value);
+        this.setSize(+this.inputNbCases.value);
+        this.createGame();
+        this.firstGame.classList.add('hidden');
+        this.startGame();
     }
 
     startNewGame() {
