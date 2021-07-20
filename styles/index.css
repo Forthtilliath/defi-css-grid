@@ -14,7 +14,6 @@ body {
 
 button {
   padding: 10px;
-  margin: 30px;
 }
 
 #root {
@@ -94,6 +93,10 @@ button {
 #gameOver .container .content .image,
 #beforeGame .container .content .image {
   margin-top: 2rem;
+}
+#gameOver .container .content * + *,
+#beforeGame .container .content * + * {
+  margin-bottom: 10px;
 }
 
 #gameOver .container .content {

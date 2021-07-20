@@ -25,7 +25,7 @@ body {
 
 button {
     padding: 10px;
-    margin: 30px;
+    // margin: 30px;
 }
 
 #root {
@@ -103,6 +103,10 @@ button {
 
             .image {
                 margin-top: 2rem;
+            }
+
+            * + * {
+                margin-bottom: 10px;
             }
         }
     }
