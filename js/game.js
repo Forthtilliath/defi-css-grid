@@ -65,7 +65,8 @@ class Game {
      */
     createGame() {
         for (let i = 0; i < this.nbCases; i++) {
-            this.container.appendChild(this.createCase(i%2 === 0));
+            // Adapte le fond pour que la couleur de fond soit alternée
+            this.container.appendChild(this.createCase(this.size % 2 ? i % 2 : (i + Math.floor(i / this.size)) % 2));
         }
         this.cases = document.querySelectorAll('.case');
         this.createCaseEvents();
@@ -77,9 +78,10 @@ class Game {
      * @returns {HTMLDivElement}
      */
     createCase(odd) {
+        console.log(odd);
         const uneCase = document.createElement('div');
         uneCase.classList.add('case');
-        if( odd ) uneCase.classList.add('odd');
+        if (odd) uneCase.classList.add('odd');
         return uneCase;
     }
 
