@@ -78,7 +78,6 @@ class Game {
      * @returns {HTMLDivElement}
      */
     createCase(odd) {
-        console.log(odd);
         const uneCase = document.createElement('div');
         uneCase.classList.add('case');
         if (odd) uneCase.classList.add('odd');
